@@ -1,0 +1,73 @@
+<script type="text/javascript">
+  RED.nodes.registerType("longship-reset", {
+    category: "Longship",
+    color: "#7bb6ef",
+    defaults: {
+      name: { value: "" },
+      server: { type: "longship-config", required: true },
+      resetType: { value: "Soft", required: true },
+    },
+    inputs: 1,
+    outputs: 1,
+    icon: "font-awesome/fa-power-off",
+    label: function () {
+      return this.name || "Reset";
+    },
+    paletteLabel: "Reset",
+  });
+</script>
+
+<script type="text/html" data-template-name="longship-reset">
+  <div class="form-row">
+    <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+    <input type="text" id="node-input-name" placeholder="Name" />
+  </div>
+  <div class="form-row">
+    <label for="node-input-server"><i class="fa fa-globe"></i> Server</label>
+    <input type="text" id="node-input-server" />
+  </div>
+  <div class="form-row">
+    <label for="node-input-resetType"
+      ><i class="fa fa-refresh"></i> Reset Type</label
+    >
+    <select id="node-input-resetType" style="width:70%;">
+      <option value="Soft">Soft Reset</option>
+      <option value="Hard">Hard Reset</option>
+    </select>
+  </div>
+</script>
+
+<script type="text/html" data-help-name="longship-reset">
+  <p>Sends a reset command to a Longship charging point.</p>
+
+  <h3>Properties</h3>
+  <dl class="message-properties">
+    <dt>Reset Type <span class="property-type">string</span></dt>
+    <dd>
+      <ul>
+        <li><b>Soft Reset:</b> Restarts the software of the charging point</li>
+        <li>
+          <b>Hard Reset:</b> Performs a complete restart of the charging point
+          hardware
+        </li>
+      </ul>
+    </dd>
+  </dl>
+
+  <h3>Inputs</h3>
+  <dl class="message-properties">
+    <dt>chargePointId <span class="property-type">string</span></dt>
+    <dd>The ID of the charge point to reset.</dd>
+
+    <dt class="optional">
+      payload.type <span class="property-type">string</span>
+    </dt>
+    <dd>Optional. Override the configured reset type ("Soft" or "Hard").</dd>
+  </dl>
+
+  <h3>Outputs</h3>
+  <dl class="message-properties">
+    <dt>payload <span class="property-type">object</span></dt>
+    <dd>The response from the Longship API.</dd>
+  </dl>
+</script>

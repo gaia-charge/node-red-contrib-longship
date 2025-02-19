@@ -1,0 +1,83 @@
+<script type="text/javascript">
+  RED.nodes.registerType("longship-remote-start", {
+    category: "Longship",
+    color: "#7bb6ef",
+    defaults: {
+      name: { value: "" },
+      server: { type: "longship-config", required: true },
+      connectorId: {
+        value: 1,
+        required: true,
+        validate: RED.validators.number(),
+      },
+      idTag: { value: "", required: false },
+    },
+    inputs: 1,
+    outputs: 1,
+    icon: "font-awesome/fa-play",
+    label: function () {
+      return this.name || "Remote Start";
+    },
+    paletteLabel: "Remote Start",
+  });
+</script>
+
+<script type="text/html" data-template-name="longship-remote-start">
+  <div class="form-row">
+    <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+    <input type="text" id="node-input-name" placeholder="Name" />
+  </div>
+  <div class="form-row">
+    <label for="node-input-server"><i class="fa fa-globe"></i> Server</label>
+    <input type="text" id="node-input-server" />
+  </div>
+  <div class="form-row">
+    <label for="node-input-connectorId"
+      ><i class="fa fa-plug"></i> Connector ID</label
+    >
+    <input type="number" id="node-input-connectorId" min="1" placeholder="1" />
+  </div>
+  <div class="form-row">
+    <label for="node-input-idTag"><i class="fa fa-id-card"></i> ID Tag</label>
+    <input type="text" id="node-input-idTag" placeholder="Optional ID Tag" />
+  </div>
+</script>
+
+<script type="text/html" data-help-name="longship-remote-start">
+  <p>Sends a remote start command to a Longship charging point.</p>
+
+  <h3>Inputs</h3>
+  <dl class="message-properties">
+    <dt>chargePointId <span class="property-type">string</span></dt>
+    <dd>The ID of the charge point to start.</dd>
+
+    <dt class="optional">
+      payload.connectorId <span class="property-type">number</span>
+    </dt>
+    <dd>
+      Optional. The connector ID to start. If not provided, uses the configured
+      connector ID.
+    </dd>
+
+    <dt class="optional">
+      payload.idTag <span class="property-type">string</span>
+    </dt>
+    <dd>
+      Optional. The ID tag to authorize the charging session. If not provided,
+      uses the configured ID tag.
+    </dd>
+  </dl>
+
+  <h3>Outputs</h3>
+  <dl class="message-properties">
+    <dt>payload <span class="property-type">object</span></dt>
+    <dd>The response from the Longship API.</dd>
+  </dl>
+
+  <h3>Details</h3>
+  <p>
+    This node sends a remote start command to initiate a charging session on a
+    specific connector of a charge point. You can optionally provide an ID tag
+    for authorization.
+  </p>
+</script>

@@ -1,0 +1,63 @@
+<script type="text/javascript">
+    RED.nodes.registerType("longship-unlock-connector", {
+        category: "Longship",
+        color: "#7bb6ef",
+        defaults: {
+            name: { value: "" },
+            server: { type: "longship-config", required: true },
+            connectorId: {
+                value: 1,
+                required: true,
+                validate: RED.validators.number()
+            }
+        },
+        inputs: 1,
+        outputs: 1,
+        icon: "font-awesome/fa-unlock",
+        label: function () {
+            return this.name || "Unlock Connector";
+        },
+        paletteLabel: "Unlock Connector"
+    });
+</script>
+
+<script type="text/html" data-template-name="longship-unlock-connector">
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name" />
+    </div>
+    <div class="form-row">
+        <label for="node-input-server"><i class="fa fa-globe"></i> Server</label>
+        <input type="text" id="node-input-server" />
+    </div>
+    <div class="form-row">
+        <label for="node-input-connectorId"><i class="fa fa-plug"></i> Connector ID</label>
+        <input type="number" id="node-input-connectorId" min="1" placeholder="1" />
+    </div>
+</script>
+
+<script type="text/html" data-help-name="longship-unlock-connector">
+    <p>Sends an unlock connector command to a Longship charging point.</p>
+
+    <h3>Inputs</h3>
+    <dl class="message-properties">
+        <dt>chargePointId <span class="property-type">string</span></dt>
+        <dd>The ID of the charge point to unlock.</dd>
+
+        <dt class="optional">payload.connectorId <span class="property-type">number</span></dt>
+        <dd>Optional. The connector ID to unlock. If not provided, uses the configured connector ID.</dd>
+    </dl>
+
+    <h3>Outputs</h3>
+    <dl class="message-properties">
+        <dt>payload <span class="property-type">object</span></dt>
+        <dd>The response from the Longship API.</dd>
+    </dl>
+
+    <h3>Details</h3>
+    <p>
+        This node sends an unlock command to a specific connector on a charging point. 
+        This can be useful when a connector is stuck in a locked state or needs to be 
+        manually unlocked for maintenance.
+    </p>
+</script>

@@ -1,0 +1,126 @@
+<script type="text/javascript">
+  RED.nodes.registerType("longship-get-composite-schedule", {
+    category: "Longship",
+    color: "#7bb6ef",
+    defaults: {
+      name: { value: "" },
+      server: { type: "longship-config", required: true },
+      connectorId: {
+        value: 1,
+        required: true,
+        validate: RED.validators.number(),
+      },
+      duration: {
+        value: 86400,
+        required: true,
+        validate: RED.validators.number(),
+      },
+      chargingRateUnit: { value: "W" },
+    },
+    inputs: 1,
+    outputs: 1,
+    icon: "font-awesome/fa-calendar",
+    label: function () {
+      return this.name || "Get Composite Schedule";
+    },
+    paletteLabel: "Get Composite Schedule",
+    oneditprepare: function () {
+      const units = [
+        { value: "W", label: "Watts (W)" },
+        { value: "A", label: "Amperes (A)" },
+      ];
+
+      const unitSelect = $("#node-input-chargingRateUnit");
+      units.forEach((unit) => {
+        unitSelect.append(
+          $("<option></option>").val(unit.value).text(unit.label)
+        );
+      });
+      if (this.chargingRateUnit) {
+        unitSelect.val(this.chargingRateUnit);
+      }
+    },
+  });
+</script>
+
+<script type="text/html" data-template-name="longship-get-composite-schedule">
+  <div class="form-row">
+    <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+    <input type="text" id="node-input-name" placeholder="Name" />
+  </div>
+  <div class="form-row">
+    <label for="node-input-server"><i class="fa fa-globe"></i> Server</label>
+    <input type="text" id="node-input-server" />
+  </div>
+  <div class="form-row">
+    <label for="node-input-connectorId"
+      ><i class="fa fa-plug"></i> Connector ID</label
+    >
+    <input type="number" id="node-input-connectorId" min="1" placeholder="1" />
+  </div>
+  <div class="form-row">
+    <label for="node-input-duration"
+      ><i class="fa fa-clock-o"></i> Duration</label
+    >
+    <input type="number" id="node-input-duration" min="0" placeholder="86400" />
+  </div>
+  <div class="form-row">
+    <label for="node-input-chargingRateUnit"
+      ><i class="fa fa-bolt"></i> Rate Unit</label
+    >
+    <select id="node-input-chargingRateUnit" style="width:70%;">
+      <option value="">Select a unit...</option>
+    </select>
+  </div>
+</script>
+
+<script type="text/html" data-help-name="longship-get-composite-schedule">
+  <p>Retrieves the composite charging schedule from a charging point.</p>
+
+  <h3>Inputs</h3>
+  <dl class="message-properties">
+    <dt>chargePointId <span class="property-type">string</span></dt>
+    <dd>The ID of the charge point to query.</dd>
+
+    <dt class="optional">
+      payload.connectorId <span class="property-type">number</span>
+    </dt>
+    <dd>
+      Optional. The connector ID to get the schedule for. If not provided, uses
+      the configured value.
+    </dd>
+
+    <dt class="optional">
+      payload.duration <span class="property-type">number</span>
+    </dt>
+    <dd>
+      Optional. Duration in seconds for which the schedule is requested. If not
+      provided, uses the configured value.
+    </dd>
+
+    <dt class="optional">
+      payload.chargingRateUnit <span class="property-type">string</span>
+    </dt>
+    <dd>
+      Optional. The unit for the charging rate (W or A). If not provided, uses
+      the configured value.
+    </dd>
+  </dl>
+
+  <h3>Outputs</h3>
+  <dl class="message-properties">
+    <dt>payload <span class="property-type">object</span></dt>
+    <dd>The composite schedule response from the Longship API.</dd>
+  </dl>
+
+  <h3>Details</h3>
+  <p>
+    This node requests the composite charging schedule from a charging point.
+    The schedule includes:
+  </p>
+  <ul>
+    <li>Current charging schedule</li>
+    <li>Duration of the schedule</li>
+    <li>Charging rate unit (Watts or Amperes)</li>
+  </ul>
+</script>

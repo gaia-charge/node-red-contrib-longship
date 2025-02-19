@@ -1,0 +1,101 @@
+<script type="text/javascript">
+  RED.nodes.registerType("longship-set-charging-profile", {
+    category: "Longship",
+    color: "#7bb6ef",
+    defaults: {
+      name: { value: "" },
+      server: { type: "longship-config", required: true },
+      connectorId: {
+        value: 1,
+        required: true,
+        validate: RED.validators.number(),
+      },
+    },
+    inputs: 1,
+    outputs: 1,
+    icon: "font-awesome/fa-chart-line",
+    label: function () {
+      return this.name || "Set Charging Profile";
+    },
+    paletteLabel: "Set Profile",
+  });
+</script>
+
+<script type="text/html" data-template-name="longship-set-charging-profile">
+  <div class="form-row">
+    <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+    <input type="text" id="node-input-name" placeholder="Name" />
+  </div>
+  <div class="form-row">
+    <label for="node-input-server"><i class="fa fa-globe"></i> Server</label>
+    <input type="text" id="node-input-server" />
+  </div>
+  <div class="form-row">
+    <label for="node-input-connectorId"
+      ><i class="fa fa-plug"></i> Connector ID</label
+    >
+    <input type="number" id="node-input-connectorId" min="1" placeholder="1" />
+  </div>
+</script>
+
+<script type="text/html" data-help-name="longship-set-charging-profile">
+  <p>Sets a charging profile for a charging point connector.</p>
+
+  <h3>Inputs</h3>
+  <dl class="message-properties">
+    <dt>chargePointId <span class="property-type">string</span></dt>
+    <dd>The ID of the charge point to set the profile for.</dd>
+
+    <dt>payload.connectorId <span class="property-type">number</span></dt>
+    <dd>The connector ID to apply the charging profile to.</dd>
+
+    <dt>
+      payload.csChargingProfiles <span class="property-type">object</span>
+    </dt>
+    <dd>
+      The charging profile configuration object with the following structure:
+      <pre>
+{
+    "chargingProfileId": number,
+    "transactionId": number (optional),
+    "stackLevel": number,
+    "chargingProfilePurpose": "ChargePointMaxProfile" | "TxDefaultProfile" | "TxProfile",
+    "chargingProfileKind": "Absolute" | "Recurring" | "Relative",
+    "recurrencyKind": "Daily" | "Weekly" (optional),
+    "validFrom": string (ISO date, optional),
+    "validTo": string (ISO date, optional),
+    "chargingSchedule": {
+        "duration": number (optional),
+        "startSchedule": string (ISO date, optional),
+        "chargingRateUnit": "W" | "A",
+        "minChargingRate": number (optional),
+        "chargingSchedulePeriod": [
+            {
+                "startPeriod": number,
+                "limit": number,
+                "numberPhases": number (optional)
+            }
+        ]
+    }
+}</pre
+      >
+    </dd>
+  </dl>
+
+  <h3>Outputs</h3>
+  <dl class="message-properties">
+    <dt>payload <span class="property-type">object</span></dt>
+    <dd>The response from the Longship API.</dd>
+  </dl>
+
+  <h3>Details</h3>
+  <p>
+    This node allows you to set a charging profile that defines how a charging
+    point should deliver power over time. The profile can be:
+  </p>
+  <ul>
+    <li>Absolute: Schedule with fixed time periods</li>
+    <li>Recurring: Schedule that repeats (daily/weekly)</li>
+    <li>Relative: Schedule relative to a start time</li>
+  </ul>
+</script>

@@ -1,0 +1,53 @@
+<script type="text/javascript">
+  RED.nodes.registerType("longship-clear-cache", {
+    category: "Longship",
+    color: "#7bb6ef",
+    defaults: {
+      name: { value: "" },
+      server: { type: "longship-config", required: true },
+    },
+    inputs: 1,
+    outputs: 1,
+    icon: "font-awesome/fa-trash",
+    label: function () {
+      return this.name || "Clear Cache";
+    },
+    paletteLabel: "Clear Cache",
+  });
+</script>
+
+<script type="text/html" data-template-name="longship-clear-cache">
+  <div class="form-row">
+    <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+    <input type="text" id="node-input-name" placeholder="Name" />
+  </div>
+  <div class="form-row">
+    <label for="node-input-server"><i class="fa fa-globe"></i> Server</label>
+    <input type="text" id="node-input-server" />
+  </div>
+</script>
+
+<script type="text/html" data-help-name="longship-clear-cache">
+  <p>Clears the cache of a Longship charging point.</p>
+
+  <h3>Inputs</h3>
+  <dl class="message-properties">
+    <dt>chargePointId <span class="property-type">string</span></dt>
+    <dd>The ID of the charge point to clear the cache for.</dd>
+  </dl>
+
+  <h3>Outputs</h3>
+  <dl class="message-properties">
+    <dt>payload <span class="property-type">object</span></dt>
+    <dd>The response from the Longship API.</dd>
+    <dt>payload.messageId <span class="property-type">string</span></dt>
+    <dd>The ID of the message sent to the charge point (if available).</dd>
+  </dl>
+
+  <h3>Details</h3>
+  <p>
+    This command clears the internal cache of the charging point. This can be
+    useful when the charging point is in an inconsistent state or needs to
+    refresh its internal data.
+  </p>
+</script>

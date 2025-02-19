@@ -1,0 +1,76 @@
+<script type="text/javascript">
+  RED.nodes.registerType("longship-config", {
+    category: "config",
+    defaults: {
+      name: { value: "", required: true },
+      baseUrl: {
+        value: "https://api.longship.io",
+        required: true,
+        validate: RED.validators.regex(/^https?:\/\/.*/),
+      },
+    },
+    credentials: {
+      tenantKey: { type: "password" },
+      applicationKey: { type: "password" },
+    },
+    label: function () {
+      return this.name;
+    },
+  });
+</script>
+
+<script type="text/html" data-template-name="longship-config">
+  <div class="form-row">
+    <label for="node-config-input-name"><i class="fa fa-tag"></i> Name</label>
+    <input type="text" id="node-config-input-name" placeholder="Name" />
+  </div>
+  <div class="form-row">
+    <label for="node-config-input-baseUrl"
+      ><i class="fa fa-globe"></i> Base URL</label
+    >
+    <input
+      type="text"
+      id="node-config-input-baseUrl"
+      placeholder="https://api.longship.io"
+    />
+  </div>
+  <div class="form-row">
+    <label for="node-config-input-tenantKey"
+      ><i class="fa fa-key"></i> Tenant Key</label
+    >
+    <input
+      type="password"
+      id="node-config-input-tenantKey"
+      placeholder="Tenant Key"
+    />
+  </div>
+  <div class="form-row">
+    <label for="node-config-input-applicationKey"
+      ><i class="fa fa-key"></i> Application Key</label
+    >
+    <input
+      type="password"
+      id="node-config-input-applicationKey"
+      placeholder="Application Key"
+    />
+  </div>
+</script>
+
+<script type="text/html" data-help-name="longship-config">
+  <p>Configuration for Longship API connection.</p>
+
+  <h3>Details</h3>
+  <p>
+    This configuration node stores the connection details for the Longship API:
+  </p>
+  <ul>
+    <li>
+      <b>Base URL:</b> The base URL of the Longship API (default:
+      https://api.longship.io)
+    </li>
+    <li>
+      <b>Tenant Key:</b> Your Longship tenant key (Ocp-Apim-Subscription-Key)
+    </li>
+    <li><b>Application Key:</b> Your Longship application key (x-api-key)</li>
+  </ul>
+</script>

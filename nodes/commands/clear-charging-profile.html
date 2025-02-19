@@ -1,0 +1,105 @@
+<script type="text/javascript">
+    RED.nodes.registerType("longship-clear-charging-profile", {
+      category: "Longship",
+      color: "#7bb6ef",
+      defaults: {
+        name: { value: "" },
+        server: { type: "longship-config", required: true },
+        connectorId: { value: "", validate: RED.validators.number(true) },
+        chargingProfileId: { value: "", validate: RED.validators.number(true) },
+        chargingProfilePurpose: { value: "" },
+        stackLevel: { value: "", validate: RED.validators.number(true) }
+      },
+      inputs: 1,
+      outputs: 1,
+      icon: "font-awesome/fa-eraser",
+      label: function () {
+        return this.name || "Clear Charging Profile";
+      },
+      paletteLabel: "Clear Charging Profile",
+      oneditprepare: function() {
+        const purposes = [
+          { value: "ChargePointMaxProfile", label: "Charge Point Max Profile" },
+          { value: "TxDefaultProfile", label: "TX Default Profile" },
+          { value: "TxProfile", label: "TX Profile" }
+        ];
+  
+        const purposeSelect = $("#node-input-chargingProfilePurpose");
+        purposes.forEach((purpose) => {
+          purposeSelect.append(
+            $("<option></option>").val(purpose.value).text(purpose.label)
+          );
+        });
+        if (this.chargingProfilePurpose) {
+          purposeSelect.val(this.chargingProfilePurpose);
+        }
+      }
+    });
+  </script>
+  
+  <script type="text/html" data-template-name="longship-clear-charging-profile">
+    <div class="form-row">
+      <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+      <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+    <div class="form-row">
+      <label for="node-input-server"><i class="fa fa-globe"></i> Server</label>
+      <input type="text" id="node-input-server">
+    </div>
+    <div class="form-row">
+      <label for="node-input-connectorId"><i class="fa fa-plug"></i> Connector ID</label>
+      <input type="number" id="node-input-connectorId" placeholder="Optional">
+    </div>
+    <div class="form-row">
+      <label for="node-input-chargingProfileId"><i class="fa fa-id-card"></i> Profile ID</label>
+      <input type="number" id="node-input-chargingProfileId" placeholder="Optional">
+    </div>
+    <div class="form-row">
+      <label for="node-input-chargingProfilePurpose"><i class="fa fa-tasks"></i> Purpose</label>
+      <select id="node-input-chargingProfilePurpose" style="width:70%;">
+        <option value="">Select a purpose...</option>
+      </select>
+    </div>
+    <div class="form-row">
+      <label for="node-input-stackLevel"><i class="fa fa-layers"></i> Stack Level</label>
+      <input type="number" id="node-input-stackLevel" placeholder="Optional">
+    </div>
+  </script>
+  
+  <script type="text/html" data-help-name="longship-clear-charging-profile">
+    <p>Clears charging profile(s) on a charging point.</p>
+  
+    <h3>Inputs</h3>
+    <dl class="message-properties">
+      <dt>chargePointId <span class="property-type">string</span></dt>
+      <dd>The ID of the charge point to clear profiles from.</dd>
+  
+      <dt class="optional">payload.connectorId <span class="property-type">number</span></dt>
+      <dd>Optional. Identifier of the connector for which to clear charging profiles.</dd>
+  
+      <dt class="optional">payload.chargingProfileId <span class="property-type">number</span></dt>
+      <dd>Optional. Identifier of the charging profile to clear.</dd>
+  
+      <dt class="optional">payload.chargingProfilePurpose <span class="property-type">string</span></dt>
+      <dd>Optional. Purpose of the charging profiles to clear (ChargePointMaxProfile, TxDefaultProfile, TxProfile).</dd>
+  
+      <dt class="optional">payload.stackLevel <span class="property-type">number</span></dt>
+      <dd>Optional. Stack level for which charging profiles will be cleared.</dd>
+    </dl>
+  
+    <h3>Outputs</h3>
+    <dl class="message-properties">
+      <dt>payload <span class="property-type">object</span></dt>
+      <dd>The response from the Longship API.</dd>
+    </dl>
+  
+    <h3>Details</h3>
+    <p>This node allows you to clear charging profiles with various filtering options. You can:</p>
+    <ul>
+      <li>Clear all profiles</li>
+      <li>Clear profiles for a specific connector</li>
+      <li>Clear a specific profile by ID</li>
+      <li>Clear profiles by purpose</li>
+      <li>Clear profiles at a specific stack level</li>
+    </ul>
+  </script>

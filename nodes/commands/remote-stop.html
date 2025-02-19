@@ -1,0 +1,54 @@
+<script type="text/javascript">
+  RED.nodes.registerType("longship-remote-stop", {
+    category: "Longship",
+    color: "#7bb6ef",
+    defaults: {
+      name: { value: "" },
+      server: { type: "longship-config", required: true },
+    },
+    inputs: 1,
+    outputs: 1,
+    icon: "font-awesome/fa-stop",
+    label: function () {
+      return this.name || "Remote Stop";
+    },
+    paletteLabel: "Remote Stop",
+  });
+</script>
+
+<script type="text/html" data-template-name="longship-remote-stop">
+  <div class="form-row">
+    <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+    <input type="text" id="node-input-name" placeholder="Name" />
+  </div>
+  <div class="form-row">
+    <label for="node-input-server"><i class="fa fa-globe"></i> Server</label>
+    <input type="text" id="node-input-server" />
+  </div>
+</script>
+
+<script type="text/html" data-help-name="longship-remote-stop">
+  <p>Sends a remote stop command to a Longship charging point.</p>
+
+  <h3>Inputs</h3>
+  <dl class="message-properties">
+    <dt>chargePointId <span class="property-type">string</span></dt>
+    <dd>The ID of the charge point to stop.</dd>
+
+    <dt>payload.transactionId <span class="property-type">number</span></dt>
+    <dd>The transaction ID to stop.</dd>
+  </dl>
+
+  <h3>Outputs</h3>
+  <dl class="message-properties">
+    <dt>payload <span class="property-type">object</span></dt>
+    <dd>The response from the Longship API.</dd>
+  </dl>
+
+  <h3>Details</h3>
+  <p>
+    This node sends a remote stop command to a charging point to stop an ongoing
+    charging session. You must provide the transaction ID of the session you
+    want to stop.
+  </p>
+</script>

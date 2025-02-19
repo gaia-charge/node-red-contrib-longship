@@ -1,0 +1,114 @@
+<script type="text/javascript">
+  RED.nodes.registerType("longship-trigger-message", {
+    category: "Longship",
+    color: "#7bb6ef",
+    defaults: {
+      name: { value: "" },
+      server: { type: "longship-config", required: true },
+      requestedMessage: { value: "StatusNotification", required: true },
+      connectorId: {
+        value: 0,
+        required: false,
+        validate: RED.validators.number(),
+      },
+    },
+    inputs: 1,
+    outputs: 1,
+    icon: "font-awesome/fa-envelope",
+    label: function () {
+      return this.name || "Trigger Message";
+    },
+    paletteLabel: "Trigger Message",
+    oneditprepare: function () {
+      const messages = [
+        { value: "BootNotification", label: "Boot Notification" },
+        { value: "Heartbeat", label: "Heartbeat" },
+        { value: "StatusNotification", label: "Status Notification" },
+        { value: "MeterValues", label: "Meter Values" },
+      ];
+
+      const messageSelect = $("#node-input-requestedMessage");
+      messages.forEach((msg) => {
+        messageSelect.append(
+          $("<option></option>").val(msg.value).text(msg.label)
+        );
+      });
+      if (this.requestedMessage) {
+        messageSelect.val(this.requestedMessage);
+      }
+    },
+  });
+</script>
+
+<script type="text/html" data-template-name="longship-trigger-message">
+  <div class="form-row">
+    <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+    <input type="text" id="node-input-name" placeholder="Name" />
+  </div>
+  <div class="form-row">
+    <label for="node-input-server"><i class="fa fa-globe"></i> Server</label>
+    <input type="text" id="node-input-server" />
+  </div>
+  <div class="form-row">
+    <label for="node-input-requestedMessage"
+      ><i class="fa fa-envelope"></i> Message Type</label
+    >
+    <select id="node-input-requestedMessage" style="width:70%;">
+      <option value="">Select a message type...</option>
+    </select>
+  </div>
+  <div class="form-row">
+    <label for="node-input-connectorId"
+      ><i class="fa fa-plug"></i> Connector ID</label
+    >
+    <input
+      type="number"
+      id="node-input-connectorId"
+      placeholder="0"
+      min="0"
+      style="width:70px;"
+    />
+  </div>
+</script>
+
+<script type="text/html" data-help-name="longship-trigger-message">
+  <p>Triggers a specific message request from a charging point.</p>
+
+  <h3>Inputs</h3>
+  <dl class="message-properties">
+    <dt>chargePointId <span class="property-type">string</span></dt>
+    <dd>The ID of the charge point to trigger the message from.</dd>
+
+    <dt class="optional">
+      payload.requestedMessage <span class="property-type">string</span>
+    </dt>
+    <dd>
+      Optional. The type of message to request. If not provided, uses the
+      configured message type.
+    </dd>
+
+    <dt class="optional">
+      payload.connectorId <span class="property-type">number</span>
+    </dt>
+    <dd>
+      Optional. The connector ID to request the message for. If not provided,
+      uses the configured connector ID. Defaults to 0 which represents the
+      entire charge point.
+    </dd>
+  </dl>
+
+  <h3>Outputs</h3>
+  <dl class="message-properties">
+    <dt>payload <span class="property-type">object</span></dt>
+    <dd>The response from the Longship API.</dd>
+  </dl>
+
+  <h3>Details</h3>
+  <p>Available message types:</p>
+  <ul>
+    <li>BootNotification - Request a boot notification message</li>
+    <li>Heartbeat - Request a heartbeat message</li>
+    <li>StatusNotification - Request a status notification message</li>
+    <li>MeterValues - Request meter values message</li>
+  </ul>
+</script>

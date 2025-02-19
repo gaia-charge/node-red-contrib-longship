@@ -1,0 +1,45 @@
+{
+    "name": "@gaia-charge/node-red-contrib-longship",
+    "version": "0.1.0",
+    "description": "A Node-RED node for Longship integration",
+    "main": "index.js",
+    "node-red": {
+        "nodes": {
+            "longship-config": "nodes/longship-config.js",
+            "longship-command-reset": "nodes/commands/reset.js",
+            "longship-trigger-message": "nodes/commands/trigger-message.js",
+            "longship-remote-start": "nodes/commands/remote-start.js",
+            "longship-remote-stop": "nodes/commands/remote-stop.js",
+            "longship-clear-cache": "nodes/commands/clear-cache.js",
+            "longship-clear-charging-profile": "nodes/commands/clear-charging-profile.js",
+            "longship-get-composite-schedule": "nodes/commands/get-composite-schedule.js",
+            "longship-set-charging-profile": "nodes/commands/set-charging-profile.js",
+            "longship-unlock-connector": "nodes/commands/unlock-connector.js",
+            "longship-update-firmware": "nodes/commands/update-firmware.js",
+            "longship-datatransfer": "nodes/commands/datatransfer.js"
+        }
+    },
+    "publishConfig": {
+        "access": "public"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/gaia-charge/node-red-contrib-longship"
+    },
+    "bugs": {
+        "url": "https://github.com/gaia-charge/node-red-contrib-longship/issues"
+    },
+    "homepage": "https://github.com/gaia-charge/node-red-contrib-longship#readme",
+    "dependencies": {
+        "node-fetch": "^2.6.1"
+    },
+    "author": "Wojtek Siudzinski <admin@suda.pl>",
+    "license": "MIT",
+    "keywords": [
+        "node-red",
+        "longship",
+        "charging",
+        "ev",
+        "ocpp"
+    ]
+}

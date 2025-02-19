@@ -1,0 +1,80 @@
+<script type="text/javascript">
+    RED.nodes.registerType("longship-update-firmware", {
+        category: "Longship",
+        color: "#7bb6ef",
+        defaults: {
+            name: { value: "" },
+            server: { type: "longship-config", required: true },
+            location: { value: "", required: true },
+            retries: { value: "", validate: RED.validators.number(true) },
+            retrieveDate: { value: "" },
+            retryInterval: { value: "", validate: RED.validators.number(true) }
+        },
+        inputs: 1,
+        outputs: 1,
+        icon: "font-awesome/fa-upload",
+        label: function () {
+            return this.name || "Update Firmware";
+        },
+        paletteLabel: "Update Firmware"
+    });
+</script>
+
+<script type="text/html" data-template-name="longship-update-firmware">
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+    <div class="form-row">
+        <label for="node-input-server"><i class="fa fa-globe"></i> Server</label>
+        <input type="text" id="node-input-server">
+    </div>
+    <div class="form-row">
+        <label for="node-input-location"><i class="fa fa-link"></i> Location</label>
+        <input type="text" id="node-input-location" placeholder="Firmware URL">
+    </div>
+    <div class="form-row">
+        <label for="node-input-retries"><i class="fa fa-repeat"></i> Retries</label>
+        <input type="number" id="node-input-retries" placeholder="Optional">
+    </div>
+    <div class="form-row">
+        <label for="node-input-retrieveDate"><i class="fa fa-calendar"></i> Retrieve Date</label>
+        <input type="text" id="node-input-retrieveDate" placeholder="Optional (ISO 8601)">
+    </div>
+    <div class="form-row">
+        <label for="node-input-retryInterval"><i class="fa fa-clock-o"></i> Retry Interval</label>
+        <input type="number" id="node-input-retryInterval" placeholder="Optional">
+    </div>
+</script>
+
+<script type="text/html" data-help-name="longship-update-firmware">
+    <p>Sends a firmware update command to a Longship charging point.</p>
+
+    <h3>Inputs</h3>
+    <dl class="message-properties">
+        <dt>chargePointId <span class="property-type">string</span></dt>
+        <dd>The ID of the charge point to update.</dd>
+
+        <dt class="optional">payload.location <span class="property-type">string</span></dt>
+        <dd>The URL where the firmware can be downloaded from. Required if not configured in the node.</dd>
+
+        <dt class="optional">payload.retries <span class="property-type">number</span></dt>
+        <dd>Optional. Number of times to retry the download if it fails.</dd>
+
+        <dt class="optional">payload.retrieveDate <span class="property-type">string</span></dt>
+        <dd>Optional. Date and time after which the charge point must retrieve the firmware (ISO 8601 format).</dd>
+
+        <dt class="optional">payload.retryInterval <span class="property-type">number</span></dt>
+        <dd>Optional. Interval in seconds between retry attempts.</dd>
+    </dl>
+
+    <h3>Outputs</h3>
+    <dl class="message-properties">
+        <dt>payload <span class="property-type">object</span></dt>
+        <dd>The response from the Longship API.</dd>
+    </dl>
+
+    <h3>Details</h3>
+    <p>This node initiates a firmware update on a charging point. The firmware must be accessible via the provided URL.</p>
+    <p>The update process can be scheduled for a future time using the retrieveDate parameter, and includes retry mechanisms in case of download failures.</p>
+</script>
