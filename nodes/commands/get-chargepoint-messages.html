@@ -1,0 +1,147 @@
+<script type="text/javascript">
+  RED.nodes.registerType("longship-get-chargepoint-messages", {
+    category: "Longship",
+    color: "#7bb6ef",
+    defaults: {
+      name: { value: "" },
+      server: { type: "longship-config", required: true },
+      skip: { value: 0, required: false, validate: RED.validators.number() },
+      take: { value: 50, required: false, validate: RED.validators.number() },
+      responseOnly: { value: false, required: false },
+      requestOnly: { value: false, required: false },
+      chargerToCpoOnly: { value: false, required: false },
+      cpoToChargerOnly: { value: false, required: false }
+    },
+    inputs: 1,
+    outputs: 1,
+    icon: "font-awesome/fa-comments",
+    label: function () {
+      return this.name || "Get Chargepoint Messages";
+    },
+    paletteLabel: "Get Chargepoint Messages",
+  });
+</script>
+
+<script type="text/html" data-template-name="longship-get-chargepoint-messages">
+  <div class="form-row">
+    <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+    <input type="text" id="node-input-name" placeholder="Name" />
+  </div>
+  <div class="form-row">
+    <label for="node-input-server"><i class="fa fa-globe"></i> Server</label>
+    <input type="text" id="node-input-server" />
+  </div>
+  <div class="form-row">
+    <label for="node-input-skip"><i class="fa fa-step-forward"></i> Skip</label>
+    <input type="number" id="node-input-skip" min="0" placeholder="0" />
+  </div>
+  <div class="form-row">
+    <label for="node-input-take"><i class="fa fa-list"></i> Take (max 100)</label>
+    <input type="number" id="node-input-take" min="1" max="100" placeholder="50" />
+  </div>
+  <div class="form-row">
+    <label for="node-input-responseOnly"><i class="fa fa-reply"></i> Response Only</label>
+    <input type="checkbox" id="node-input-responseOnly" />
+  </div>
+  <div class="form-row">
+    <label for="node-input-requestOnly"><i class="fa fa-paper-plane"></i> Request Only</label>
+    <input type="checkbox" id="node-input-requestOnly" />
+  </div>
+  <div class="form-row">
+    <label for="node-input-chargerToCpoOnly"><i class="fa fa-arrow-up"></i> Charger to CPO Only</label>
+    <input type="checkbox" id="node-input-chargerToCpoOnly" />
+  </div>
+  <div class="form-row">
+    <label for="node-input-cpoToChargerOnly"><i class="fa fa-arrow-down"></i> CPO to Charger Only</label>
+    <input type="checkbox" id="node-input-cpoToChargerOnly" />
+  </div>
+</script>
+
+<script type="text/html" data-help-name="longship-get-chargepoint-messages">
+  <p>Retrieves message logs for a specific chargepoint from the Longship API.</p>
+
+  <h3>Inputs</h3>
+  <dl class="message-properties">
+    <dt>chargePointId <span class="property-type">string</span></dt>
+    <dd>The ID of the chargepoint to retrieve messages for.</dd>
+
+    <dt class="optional">payload.search <span class="property-type">string</span></dt>
+    <dd>Optional. Search string to filter messages (not all fields are indexed).</dd>
+
+    <dt class="optional">payload.from <span class="property-type">string</span></dt>
+    <dd>Optional. Start date-time filter (RFC3339 format).</dd>
+
+    <dt class="optional">payload.to <span class="property-type">string</span></dt>
+    <dd>Optional. End date-time filter (RFC3339 format).</dd>
+
+    <dt class="optional">payload.transactionId <span class="property-type">string</span></dt>
+    <dd>Optional. Filter messages by specific transaction ID.</dd>
+
+    <dt class="optional">payload.messageId <span class="property-type">string</span></dt>
+    <dd>Optional. Search for messages with specific message ID.</dd>
+
+    <dt class="optional">payload.skip <span class="property-type">number</span></dt>
+    <dd>Optional. Skip the first N messages (overrides configured value).</dd>
+
+    <dt class="optional">payload.take <span class="property-type">number</span></dt>
+    <dd>Optional. Take N messages (max 100, overrides configured value).</dd>
+
+    <dt class="optional">payload.responseOnly <span class="property-type">boolean</span></dt>
+    <dd>Optional. Only return response messages (overrides configured value).</dd>
+
+    <dt class="optional">payload.requestOnly <span class="property-type">boolean</span></dt>
+    <dd>Optional. Only return request messages (overrides configured value).</dd>
+
+    <dt class="optional">payload.chargerToCpoOnly <span class="property-type">boolean</span></dt>
+    <dd>Optional. Only return messages from charger to CPO (overrides configured value).</dd>
+
+    <dt class="optional">payload.cpoToChargerOnly <span class="property-type">boolean</span></dt>
+    <dd>Optional. Only return messages from CPO to charger (overrides configured value).</dd>
+  </dl>
+
+  <h3>Outputs</h3>
+  <dl class="message-properties">
+    <dt>payload <span class="property-type">array</span></dt>
+    <dd>Array of message log entries, each containing:
+      <ul>
+        <li><strong>id</strong> - Unique message identifier</li>
+        <li><strong>chargePointId</strong> - Charge point identifier</li>
+        <li><strong>messageId</strong> - OCPP message ID</li>
+        <li><strong>wampMessageType</strong> - WAMP message type (Request/Response/Error/Unknown)</li>
+        <li><strong>ocppMessageType</strong> - OCPP message type (Authorize, BootNotification, etc.)</li>
+        <li><strong>direction</strong> - Message direction (CpoToCharger/ChargerToCpo/Unknown)</li>
+        <li><strong>tenantId</strong> - Tenant identifier</li>
+        <li><strong>payload</strong> - Message payload content</li>
+        <li><strong>timestamp</strong> - Message timestamp</li>
+      </ul>
+    </dd>
+  </dl>
+
+  <h3>Details</h3>
+  <p>
+    This node retrieves message logs for a specific chargepoint from the Longship API.
+    The response includes detailed information about OCPP messages exchanged between
+    the chargepoint and the central system, including message types, directions,
+    timestamps, and payloads.
+  </p>
+
+  <h3>Supported OCPP Message Types</h3>
+  <p>Authorize, BootNotification, DiagnosticsStatusNotification, FirmwareStatusNotification, 
+  Heartbeat, MeterValues, Reset, StartTransaction, StatusNotification, StopTransaction, 
+  CancelReservation, ChangeAvailability, ChangeConfiguration, ClearCache, ClearCharchingProfile, 
+  GetCompositeSchedule, GetConfiguration, GetDiagnostics, GetLocalList, RemoteStartTransaction, 
+  RemoteStopTransaction, ReserveNow, SendLocalList, SetChargingProfile, TriggerMessage, 
+  UnlockConnector, UpdateFirmware, DataTransfer, TransactionEvent, NotifyMonitoringReport, 
+  SecurityEventNotification</p>
+
+  <h3>Example Usage</h3>
+  <p>Send a message with:</p>
+  <pre><code>{
+    "chargePointId": "CP001",
+    "payload": {
+      "from": "2024-01-01T00:00:00Z",
+      "to": "2024-01-31T23:59:59Z",
+      "take": 20
+    }
+  }</code></pre>
+</script> 

@@ -34,6 +34,12 @@ Before using any of the command nodes, you need to configure the Longship connec
   - Returns comprehensive data including status, configuration, EVSEs, connectors, and tariffs
   - Input: chargePointId
 
+- **Get Chargepoint Messages**
+  - Retrieves message logs for a specific chargepoint
+  - Supports filtering by date range, message type, direction, transaction ID, and more
+  - Returns detailed OCPP message information including payloads and timestamps
+  - Input: chargePointId, optional filters in payload
+
 #### Basic Commands
 
 - **Clear Cache**
