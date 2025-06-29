@@ -6,6 +6,7 @@
     "node-red": {
         "nodes": {
             "longship-config": "nodes/longship-config.js",
+            "longship-get-chargepoint": "nodes/commands/get-chargepoint.js",
             "longship-command-reset": "nodes/commands/reset.js",
             "longship-trigger-message": "nodes/commands/trigger-message.js",
             "longship-remote-start": "nodes/commands/remote-start.js",

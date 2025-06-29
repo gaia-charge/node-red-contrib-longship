@@ -1,0 +1,78 @@
+<script type="text/javascript">
+  RED.nodes.registerType("longship-get-chargepoint", {
+    category: "Longship",
+    color: "#7bb6ef",
+    defaults: {
+      name: { value: "" },
+      server: { type: "longship-config", required: true }
+    },
+    inputs: 1,
+    outputs: 1,
+    icon: "font-awesome/fa-info-circle",
+    label: function () {
+      return this.name || "Get Chargepoint";
+    },
+    paletteLabel: "Get Chargepoint",
+  });
+</script>
+
+<script type="text/html" data-template-name="longship-get-chargepoint">
+  <div class="form-row">
+    <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+    <input type="text" id="node-input-name" placeholder="Name" />
+  </div>
+  <div class="form-row">
+    <label for="node-input-server"><i class="fa fa-globe"></i> Server</label>
+    <input type="text" id="node-input-server" />
+  </div>
+</script>
+
+<script type="text/html" data-help-name="longship-get-chargepoint">
+  <p>Retrieves information about a specific chargepoint from the Longship API.</p>
+
+  <h3>Inputs</h3>
+  <dl class="message-properties">
+    <dt>chargePointId <span class="property-type">string</span></dt>
+    <dd>The ID of the chargepoint to retrieve information for.</dd>
+  </dl>
+
+  <h3>Outputs</h3>
+  <dl class="message-properties">
+    <dt>payload <span class="property-type">object</span></dt>
+    <dd>The chargepoint information including:
+      <ul>
+        <li><strong>id</strong> - Unique identifier</li>
+        <li><strong>chargePointId</strong> - Charge point identifier</li>
+        <li><strong>displayName</strong> - Display name</li>
+        <li><strong>roamingName</strong> - Roaming name</li>
+        <li><strong>chargePointModel</strong> - Model of the charge point</li>
+        <li><strong>chargePointVendor</strong> - Vendor of the charge point</li>
+        <li><strong>firmwareVersion</strong> - Current firmware version</li>
+        <li><strong>connectivityStatus</strong> - Online/Offline status</li>
+        <li><strong>evses</strong> - Array of EVSEs with connectors</li>
+        <li><strong>locationId</strong> - Associated location ID</li>
+        <li><strong>maxCapacityInKw</strong> - Maximum charging capacity</li>
+        <li><strong>isRoaming</strong> - Whether roaming is enabled</li>
+        <li><strong>hasGuestUsage</strong> - Whether guest usage is allowed</li>
+        <li><strong>allowAnyToken</strong> - Whether any token is allowed</li>
+        <li><strong>tariffId</strong> - Associated tariff ID</li>
+        <li><strong>tariffName</strong> - Associated tariff name</li>
+        <li><strong>dateCreated</strong> - Creation date</li>
+        <li><strong>updated</strong> - Last update date</li>
+      </ul>
+    </dd>
+  </dl>
+
+  <h3>Details</h3>
+  <p>
+    This node retrieves detailed information about a specific chargepoint from the Longship API.
+    The response includes comprehensive details about the chargepoint's configuration, status, 
+    capabilities, and associated information like EVSEs, connectors, and tariffs.
+  </p>
+
+  <h3>Example Usage</h3>
+  <p>Send a message with:</p>
+  <pre><code>{
+    "chargePointId": "CP001"
+  }</code></pre>
+</script> 

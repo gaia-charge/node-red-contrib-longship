@@ -27,6 +27,13 @@ Before using any of the command nodes, you need to configure the Longship connec
 
 ### Command Nodes
 
+#### Information Retrieval
+
+- **Get Chargepoint**
+  - Retrieves detailed information about a specific chargepoint
+  - Returns comprehensive data including status, configuration, EVSEs, connectors, and tariffs
+  - Input: chargePointId
+
 #### Basic Commands
 
 - **Clear Cache**
